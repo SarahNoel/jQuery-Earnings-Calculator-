@@ -61,11 +61,3 @@ function averageTip(tipTotal, numberTips){
   var tipAverage = tipTotal / numberTips;
   return tipAverage.toFixed(2);
 }
-
-
-
-
-
-
-
-

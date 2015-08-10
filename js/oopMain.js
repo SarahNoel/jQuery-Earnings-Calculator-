@@ -5,28 +5,23 @@ $(document).on('ready', function() {
 
   $('input[value="Submit"]').on('click', function(e) {
     e.preventDefault();
-
     var mealCost = {};
+    var newMeal= new Bill(
+        $('input[name="meal-price"]').val(),
+        $('input[name="meal-taxrate"]').val(),
+        $('input[name="meal-tiprate"]').val());
+    mealArray.push(newMeal);
 
-    // set variable to input value
-    mealCost.mealPrice = $('input[name="meal-price"]').val();
-    mealCost.mealTaxRate = $('input[name="meal-taxrate"]').val();
-    mealCost.mealTipRate = $('input[name="meal-tiprate"]').val();
-    mealArray.push(mealCost);
-
-    // call function
-    var subtotalDOM = subtotal(mealCost.mealPrice, mealCost.mealTaxRate);
-    var tipDOM = tipTotal(mealCost.mealPrice, mealCost.mealTipRate);
-    var totalDOM = totalCharges(subtotalDOM, tipDOM);
-
-    $('input').not('.btn').val(" ");
+   // call function
+    var subtotalDOM = newMeal.subtotal(newMeal.mealPrice, newMeal.mealTaxRate);
+    var tipDOM = newMeal.tipTotal(newMeal.mealPrice, newMeal.mealTipRate);
+    var totalDOM = newMeal.totalCharges(subtotalDOM, tipDOM);
+    var totalTipsDOM = newMeal.tipEarnings(mealArray);
+    var mealCountDOM = newMeal.mealCount(mealArray);
+    var averageTipDOM = newMeal.averageTip(totalTipsDOM, mealCountDOM);
 
     //Total Earnings
-    var totalTipsDOM = tipEarnings(mealArray);
-    var mealCountDOM = mealCount(mealArray);
-    var averageTipDOM = averageTip(totalTipsDOM, mealCountDOM);
 
-    //DOM manipulation
     $('#subtotal').html("$" + subtotalDOM);
     $('#tip').html("$" + tipDOM);
     $('#total').html("$" + totalDOM);
@@ -35,7 +30,7 @@ $(document).on('ready', function() {
     $('#total-tips').html("$" + totalTipsDOM);
     $('#meal-count').html(mealCountDOM);
     $('#average-tip').html("$" + averageTipDOM);
-
+    $('input').not('.btn').val(" ");
   }); //end of submit button
 
 //clear button
